@@ -1,0 +1,7 @@
+linkhashset  contain unique values it allows null values
+treemap is a key where there is a set of variable
+hashmap is an unordered collection of elements while treemap
+
+enumarators are used to store the sequence of constant values
+
+create class employee camparable inter face and sort the employee based on their hike salary
