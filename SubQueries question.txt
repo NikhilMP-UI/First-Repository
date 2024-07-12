@@ -1,0 +1,61 @@
+Write a query to display the employee details  who are getting maximum salary in sales department from emp, dept tables? 
+Ans: 
+SQL> SELECT ENAME, SAL,DEPTNO FROM EMP WHERE SAL =(SELECT MAX(SAL)
+FROM EMP WHERE DEPTNO=(SELECT DEPTNO FROM DEPT WHERE DNAME='SALES’));
+
+
+Q) Write a query to display the Second maximum salary  from emp table? 
+Ans: SQL> SELECT MAX(SAL)FROM EMP WHERE SAL <(SELECT MAX(SAL)      FROM EMP);
+
+Q) Write a query to display employee details who are getting Second maximum salary  from emp table? 
+Ans: SQL> SELECT Ename,sal FROM EMP WHERE SAL= ( SELECT MAX(SAL)FROM EMP WHERE SAL <(SELECT MAX(SAL) FROM EMP));
+
+Q) Write a query to display the employees who are working in sales department from emp, dept tables. 
+Ans: SQL> select ename from emp where deptno=(select deptno from dept where dname=‘SALES’);
+
+Q) Write a query to display the employees who are working with “SMITH” department number from emp table?
+ Ans: SQL> select ename from emp where deptno=(select deptno from emp where ename=‘SMITH’); 
+
+Q) Write a query to display senior most employee details from emp table? 
+Ans: SQL> select * from emp where hiredate=(select min(hiredate) from emp); 
+
+Q) Write a query to display highest sal details emp table? 
+Ans: SQL> select * from emp where sal=(select max (sal) from emp); 
+
+Q) Write a query to display highest paid emp department, dname from emp, dept tables? 
+Ans: SQL> select dname  from dept where deptno=(select deptno from emp where sal=(select max(sal) from emp));
+
+
+Q) Write a query to display the employees who are working under BLAKE from emp table using empno, mgr columns ? 
+Ans: SQL> select * from emp where mgr= (select empno from emp where ename='BLAKE'); 
+
+NOTE: In all database systems whenever child query contains nested group functions then we must use “Group BY” clause within child query. 
+
+Q) Write a query to display lowest average salary job from emp table where deptno less than 30? 
+Ans: SQL> select deptno, min(sal) from emp group by deptno having min(sal)>(select min(sal) from emp where deptno= 30); 
+
+Q) Write a query to display the employees who are working sales department from emp, dept tables? 
+Ans: SQL> select e.ename, d.dname from emp e,dept d where e.deptno=d.deptno and e.deptno=(select d.deptno from dept d where dname='SALES');
+
+Ex. List the emps who are not working in sales dept 
+SELECT * FROM EMP WHERE DEPTNO NOT IN (SELECT DEPTNO  FROM DEPT 
+WHERE DNAME = 'SALES'); 
+
+Q) Write a query to display the employee details who are getting max(sal) in each department from emp table? 
+Ans: SQL> select * from emp where sal= (select max(sal) from emp group by deptno); 
+Error: single row sub query returns more than one row. 
+
+This is an multiple row sub query because here query returns multiple values. 
+Solution: 
+SQL> select * from emp where sal in(select max(sal) from emp group by deptno); 
+
+Q) Write a query to display the employees who are working in sales or research department from emp, dept?
+ Ans: SQL> select ename, deptno from emp where deptno in(select deptno from dept where dname='SALES' or dname='RESEARCH'); 
+
+Q) Write a query to display the employees who are working as “supervisors” (managers) from emp table using empno, mgr? 
+Ans: SQL> select * from emp where empno in(select mgr from emp);
+
+
+
+
+

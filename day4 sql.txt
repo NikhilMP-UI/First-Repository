@@ -1,0 +1,64 @@
+mysql> select empno, ename, deptno,
+    -> case deptno
+    -> when 10 then 0.5*sal
+    -> when 20 then 0.6*sal
+    -> when 30 then 0.7*sal
+    -> else 0.8*sal
+    -> end
+    -> "bonus"
+    -> from emp;
++-------+--------+--------+--------------------+
+| empno | ename  | deptno | bonus              |
++-------+--------+--------+--------------------+
+|  7369 | SMITH  |     20 |                480 |
+|  7499 | ALLEN  |     30 |               1120 |
+|  7521 | WARD   |     30 |                875 |
+|  7566 | JONES  |     20 |               1785 |
+|  7654 | MARTIN |     30 |                875 |
+|  7698 | BLAKE  |     30 | 1994.9999999999998 |
+|  7782 | CLARK  |     10 |               1225 |
+|  7788 | SCOTT  |     20 |               1800 |
+|  7839 | KING   |     10 |               2500 |
+|  7844 | TURNER |     30 |               1050 |
+|  7876 | ADAMS  |     20 |                660 |
+|  7900 | JAMES  |     30 |                665 |
+|  7902 | FORD   |     20 |               1800 |
+|  7934 | MILLER |     10 |                650 |
++-------+--------+--------+--------------------+
+14 rows in set (0.00 sec)
+-----------------------------------------------------------------------------------------------------------------------------
+
+mysql> create table demotable1601
+    -> (
+    -> firstname varchar(20) ,
+    -> lastname varchar(20)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into demotable1601 values('jagan','ask');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into demotable1601 values('vijay','');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into demotable1601 values('rama','miller');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into demotable1601 values('ajay','');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> update demotable1601 set lastname=ifnull(lastname='',null);
+Query OK, 4 rows affected (0.04 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> select * from demotable1601;
++-----------+----------+
+| firstname | lastname |
++-----------+----------+
+| jagan     | 0        |
+| vijay     | 1        |
+| rama      | 0        |
+| ajay      | 1        |
++-----------+----------+
+4 rows in set (0.00 sec)
+-----------------------------------------------------------------------------------------------------------------------------

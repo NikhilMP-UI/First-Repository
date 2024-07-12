@@ -1,0 +1,902 @@
+mysql>alter table emp add column doj date;
+Query OK, 0 rows affected (0.40 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc emp;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | YES  |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| salary | int         | YES  |     | NULL    |       |
+| doj    | date        | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.12 sec)
+insert into emp values(106,'vinay',52000,'2021-03-21')
+
+mysql> desc emp;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | YES  |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| salary | int         | YES  |     | NULL    |       |
+| doj    | date        | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into emp values(106,'Vinay',52000,'2021-03-21');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from emp;
++------+---------+--------+------------+
+| id   | name    | salary | doj        |
++------+---------+--------+------------+
+|  101 | Karthik |  43000 | NULL       |
+|  102 | Arjun   |  45000 | NULL       |
+|  103 | Vijay   |  47000 | NULL       |
+|  104 | Arun    |  49000 | NULL       |
+|  105 | Gokul   |  50000 | NULL       |
+|  106 | Vinay   |  52000 | 2021-03-21 |
++------+---------+--------+------------+
+6 rows in set 
+
+
+mysql> update emp set doj='2022-05-25' where id=102;
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emp;
++------+---------+--------+------------+
+| id   | name    | salary | doj        |
++------+---------+--------+------------+
+|  101 | Karthik |  43000 | NULL       |
+|  102 | Arjun   |  45000 | 2022-05-25 |
+|  103 | Vijay   |  47000 | NULL       |
+|  104 | Arun    |  49000 | NULL       |
+|  105 | Gokul   |  50000 | NULL       |
+|  106 | Vinay   |  52000 | 2021-03-21 |
++------+---------+--------+------------+
+6 rows in set (0.00 sec)
+mysql> select id as empid,name as empname,salary as esal,doj as dateofjoining from emp;
++-------+---------+-------+---------------+
+| empid | empname | esal  | dateofjoining |
++-------+---------+-------+---------------+
+|   101 | Karthik | 43000 | NULL          |
+|   102 | Arjun   | 45000 | 2022-05-25    |
+|   103 | Vijay   | 47000 | 2023-06-27    |
+|   104 | Arun    | 49000 | NULL          |
+|   105 | Gokul   | 50000 | NULL          |
+|   106 | Vinay   | 52000 | 2021-03-21    |
++-------+---------+-------+---------------+
+6 rows in set (0.00 sec)
+
+mysql> select Date('2021-01-15');
++--------------------+
+| Date('2021-01-15') |
++--------------------+
+| 2021-01-15         |
++--------------------+
+1 row in set (0.07 sec)
+
+mysql> select Date('2021-01-15') as Date1;
++------------+
+| Date1      |
++------------+
+| 2021-01-15 |
++------------+
+1 row in set (0.00 sec)
+
+
+mysql> select Date_format('2021-05-21','%y');
++--------------------------------+
+| Date_format('2021-05-21','%y') |
++--------------------------------+
+| 21                             |
++--------------------------------+
+1 row in set (0.07 sec)
+
+mysql> select Date_format('2021-05-21','%Y');
++--------------------------------+
+| Date_format('2021-05-21','%Y') |
++--------------------------------+
+| 2021                           |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp;
++------+---------+--------+------------+
+| id   | name    | salary | doj        |
++------+---------+--------+------------+
+|  101 | Karthik |  43000 | NULL       |
+|  102 | Arjun   |  45000 | 2022-05-25 |
+|  103 | Vijay   |  47000 | 2023-06-27 |
+|  104 | Arun    |  49000 | NULL       |
+|  105 | Gokul   |  50000 | NULL       |
+|  106 | Vinay   |  52000 | 2021-03-21 |
++------+---------+--------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select date_format(doj,'%Y') as dateofjoining from emp;
++---------------+
+| dateofjoining |
++---------------+
+| NULL          |
+| 2022          |
+| 2023          |
+| NULL          |
+| NULL          |
+| 2021          |
++---------------+
+6 rows in set (0.00 sec)
+
+mysql> select date_format('2023-09-26','%W');
++--------------------------------+
+| date_format('2023-09-26','%W') |
++--------------------------------+
+| Tuesday                        |
++--------------------------------+
+1 row in set (0.04 sec)
+
+mysql> select date_format('2023-09-26','%M');
++--------------------------------+
+| date_format('2023-09-26','%M') |
++--------------------------------+
+| September                      |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format('2023-09-26','%d');
++--------------------------------+
+| date_format('2023-09-26','%d') |
++--------------------------------+
+| 26                             |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format('2023-09-26','%D');
++--------------------------------+
+| date_format('2023-09-26','%D') |
++--------------------------------+
+| 26th                           |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format('2023-07-9 19:55:22','%H');
++----------------------------------------+
+| date_format('2023-07-9 19:55:22','%H') |
++----------------------------------------+
+| 19                                     |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format('2023-07-9 19:55:22','%h');
++----------------------------------------+
+| date_format('2023-07-9 19:55:22','%h') |
++----------------------------------------+
+| 07                                     |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format('2023-07-9 19:55:22','%i');
++----------------------------------------+
+| date_format('2023-07-9 19:55:22','%i') |
++----------------------------------------+
+| 55                                     |
++----------------------------------------+
+1 row in set (0.00 sec)
+(here 'i' is minutes)
+
+mysql> select date_format('2023-07-9 19:55:22','%s');
++----------------------------------------+
+| date_format('2023-07-9 19:55:22','%s') |
++----------------------------------------+
+| 22                                     |
++----------------------------------------+
+1 row in set (0.00 sec)
+(here 's' is seconds)
+
+mysql> select date_add('2021-07-15',interval 22 Day);
++----------------------------------------+
+| date_add('2021-07-15',interval 22 Day) |
++----------------------------------------+
+| 2021-08-06                             |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_add('2021-07-15 09:55:22',interval 22 MINUTE);
++----------------------------------------------------+
+| date_add('2021-07-15 09:55:22',interval 22 MINUTE) |
++----------------------------------------------------+
+| 2021-07-15 10:17:22                                |
++----------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_add('2021-07-15 09:55:22',interval -22 MINUTE);
++-----------------------------------------------------+
+| date_add('2021-07-15 09:55:22',interval -22 MINUTE) |
++-----------------------------------------------------+
+| 2021-07-15 09:33:22                                 |
++-----------------------------------------------------+
+1 row in set (0.11 sec)
+
+mysql> select datediff('2021-05-25','2021-05-10');
++-------------------------------------+
+| datediff('2021-05-25','2021-05-10') |
++-------------------------------------+
+|                                  15 |
++-------------------------------------+
+1 row in set (0.04 sec)
+
+mysql> select date_sub('2021-05-17',interval 10 day);
++----------------------------------------+
+| date_sub('2021-05-17',interval 10 day) |
++----------------------------------------+
+| 2021-05-07                             |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select dayname('2021-05-12')as day1 ;
++-----------+
+| day1      |
++-----------+
+| Wednesday |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select dayofmonth('2021-05-12')as day1 ;
++------+
+| day1 |
++------+
+|   12 |
++------+
+1 row in set (0.00 sec)
+(for date related things we can use this quries)
+
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2023-09-26 10:12:35 |
++---------------------+
+1 row in set (0.00 sec)
+mysql> select curdate();
++------------+
+| curdate()  |
++------------+
+| 2023-09-26 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format('2023-05-6',"%Y %M %D");
++-------------------------------------+
+| date_format('2023-05-6',"%Y %M %D") |
++-------------------------------------+
+| 2023 May 6th                        |
++-------------------------------------+
+1 row in set (0.00 sec)
+
+constraints are 
+not null
+unique
+primary key
+foriegn key 
+check
+default
+create index
+
+mysql> select * from customer;
++--------+------+-----------+
+| custid | name | address   |
++--------+------+-----------+
+|      1 | Arun | Bangalore |
++--------+------+-----------+
+1 row in set (0.00 sec)
+
+mysql> insert into order1 values(1001,1,'Laptop');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into order1 values(1002,2,'Tablet');
+ERROR 1452 (23000): Cannot add or update a child row:
+a foreign key constraint fails (`hm3`.`order1`, CONSTRAINT `order1_ibfk_1` FOREIGN KEY (`custid`) REFERENCES `customer` (`custid`))
+ 
+to create index:-
+
+mysql> create index name_idx on emp(name);
+Query OK, 0 rows affected (0.45 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> cccccc
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| emp   |          1 | name_idx |            1 | name        | A         |           6 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+1 row in set (0.10 sec)
+
+mysql> select (name) from emp;
++---------+
+| name    |
++---------+
+| Arjun   |
+| Arun    |
+| Gokul   |
+| Karthik |
+| Vijay   |
+| Vinay   |
++---------+
+6 rows in set (0.00 sec)
+
+autoincrement in rollno without inserting value rollno----------------------------------
+
+mysql> create table student1(rollno int auto_increment not null,name varchar(20),branch varchar(20),primary key(rollno));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into student1 (name,branch) values('Nikhil','ECE');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student1;
++--------+--------+--------+
+| rollno | name   | branch |
++--------+--------+--------+
+|      1 | Nikhil | ECE    |
++--------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into student1 (name,branch) values('rakesh','cse');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from student1;
++--------+--------+--------+
+| rollno | name   | branch |
++--------+--------+--------+
+|      1 | Nikhil | ECE    |
+|      2 | rakesh | cse    |
++--------+--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> alter table student1 auto_increment=1001;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into student1 (name,branch) values('kushala','ME');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from student1;
++--------+---------+--------+
+| rollno | name    | branch |
++--------+---------+--------+
+|      1 | Nikhil  | ECE    |
+|      2 | rakesh  | cse    |
+|      3 | kushala | ME     |
+|   1001 | kushala | ME     |
++--------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> insert into student1 (name,branch) values('manju','cv');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from student1;
++--------+---------+--------+
+| rollno | name    | branch |
++--------+---------+--------+
+|      1 | Nikhil  | ECE    |
+|      2 | rakesh  | cse    |
+|      3 | kushala | ME     |
+|   1001 | kushala | ME     |
+|   1002 | manju   | cv     |
++--------+---------+--------+
+5 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------
+
+subquery is also called as inner query 
+
+subquery-----------------------------------------------
+
+mysql> select name,salary from emp where id in (select id from emp);
++---------+--------+
+| name    | salary |
++---------+--------+
+| Karthik |  43000 |
+| Arjun   |  45000 |
+| Vijay   |  47000 |
+| Arun    |  49000 |
+| Gokul   |  50000 |
+| Vinay   |  52000 |
++---------+--------+
+6 rows in set (0.08 sec)
+
+mysql> select name,salary from emp where id in (select id from emp where id=101);
++---------+--------+
+| name    | salary |
++---------+--------+
+| Karthik |  43000 |
++---------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp;
++------+---------+--------+------------+
+| id   | name    | salary | doj        |
++------+---------+--------+------------+
+|  101 | Karthik |  43000 | NULL       |
+|  102 | Arjun   |  45000 | 2022-05-25 |
+|  103 | Vijay   |  47000 | 2023-06-27 |
+|  104 | Arun    |  49000 | NULL       |
+|  105 | Gokul   |  50000 | NULL       |
+|  106 | Vinay   |  52000 | 2021-03-21 |
++------+---------+--------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select name,salary from emp where id in (select id from emp);
++---------+--------+
+| name    | salary |
++---------+--------+
+| Karthik |  43000 |
+| Arjun   |  45000 |
+| Vijay   |  47000 |
+| Arun    |  49000 |
+| Gokul   |  50000 |
+| Vinay   |  52000 |
++---------+--------+
+6 rows in set (0.08 sec)
+
+mysql> select name,salary from emp where id in (select id from emp where id=101);
++---------+--------+
+| name    | salary |
++---------+--------+
+| Karthik |  43000 |
++---------+--------+
+1 row in set (0.00 sec) select * from emp;
++------+---------+--------+------------+
+| id   | name    | salary | doj        |
++------+---------+--------+------------+
+|  101 | Karthik |  43000 | NULL       |
+|  102 | Arjun   |  45000 | 2022-05-25 |
+|  103 | Vijay   |  47000 | 2023-06-27 |
+|  104 | Arun    |  49000 | NULL       |
+|  105 | Gokul   |  50000 | NULL       |
+|  106 | Vinay   |  52000 | 2021-03-21 |
++------+---------+--------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select name,salary from emp where id in (select id from emp);
++---------+--------+
+| name    | salary |
++---------+--------+
+| Karthik |  43000 |
+| Arjun   |  45000 |
+| Vijay   |  47000 |
+| Arun    |  49000 |
+| Gokul   |  50000 |
+| Vinay   |  52000 |
++---------+--------+
+6 rows in set (0.08 sec)
+
+mysql> select name,salary from emp where id in (select id from emp where id=101);
++---------+--------+
+| name    | salary |
++---------+--------+
+| Karthik |  43000 |
++---------+--------+
+1 row in set (0.00 sec)
+
+
+mysql> select * from emp where salary in(select salary from emp where salary>40000);
++------+---------+--------+------------+
+| id   | name    | salary | doj        |
++------+---------+--------+------------+
+|  101 | Karthik |  43000 | NULL       |
+|  102 | Arjun   |  45000 | 2022-05-25 |
+|  103 | Vijay   |  47000 | 2023-06-27 |
+|  104 | Arun    |  49000 | NULL       |
+|  105 | Gokul   |  50000 | NULL       |
+|  106 | Vinay   |  52000 | 2021-03-21 |
++------+---------+--------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from emp where salary in(select salary from emp where salary>50000);
++------+-------+--------+------------+
+| id   | name  | salary | doj        |
++------+-------+--------+------------+
+|  106 | Vinay |  52000 | 2021-03-21 |
++------+-------+--------+------------+
+1 row in set (0.00 sec)
+
+mysql>select * from emp where salary in(select min(salary) from emp);
++------+---------+--------+------+
+| id   | name    | salary | doj  |
++------+---------+--------+------+
+|  101 | Karthik |  43000 | NULL |
++------+---------+--------+------+
+1 row in set (0.11 sec)
+-------------------------------------------------------------
+not in:- means filtering it will not select that name
+
+mysql> select name,salary from emp where name not in (select name from emp  where name='Arjun');
++---------+--------+
+| name    | salary |
++---------+--------+
+| Arun    |  49000 |
+| Gokul   |  50000 |
+| Karthik |  43000 |
+| Vijay   |  47000 |
+| Vinay   |  52000 |
++---------+--------+
+5 rows in set (0.04 sec)
+
+mysql> select name,salary from emp where salary not in (select salary from emp  where salary=47000);
++---------+--------+
+| name    | salary |
++---------+--------+
+| Arjun   |  45000 |
+| Arun    |  49000 |
+| Gokul   |  50000 |
+| Karthik |  43000 |
+| Vinay   |  52000 |
++---------+--------+
+5 rows in set (0.00 sec)
+--------------------------------------------------------------
+subquery '=' to 
+
+mysql> select name,city from customer3 where city=(select city from customer3 where city='Chennai');
++-------+---------+
+| name  | city    |
++-------+---------+
+| Vijay | Chennai |
++-------+---------+
+1 row in set (0.00 sec)
+------------------------------------------------------------------
+subquery exit and non exit
+
+mysql> select * from customer;
++--------+---------+-----------+
+| custid | name    | address   |
++--------+---------+-----------+
+|      1 | Arun    | Bangalore |
+|      2 | Karthik | Bangalore |
+|      3 | Pavan   | Delhi     |
++--------+---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> insert into order1 values(1002,2,'Tablet');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into order1 values(1003,2,'Mobile');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from order1;
++---------+--------+--------------+
+| orderid | custid | orderdetails |
++---------+--------+--------------+
+|    1001 |      1 | Laptop       |
+|    1002 |      2 | Tablet       |
+|    1003 |      2 | Mobile       |
++---------+--------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select name,address from customer c where exists(select * from order1 o where c.custid=o.custid);
++---------+-----------+
+| name    | address   |
++---------+-----------+
+| Arun    | Bangalore |
+| Karthik | Bangalore |
++---------+-----------+
+2 rows in set (0.00 sec)
+
+
+mysql> select name,address from customer c where not exists(select * from order1 o where c.custid=o.custid);
++-------+---------+
+| name  | address |
++-------+---------+
+| Pavan | Delhi   |
++-------+---------+
+1 row in set (0.00 sec)
+--------------------------------------------------------------------------
+ scalar functions;
+
+mysql> select ucase ('karthik') as name;
++---------+
+| name    |
++---------+
+| KARTHIK |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select upper ('karthik') as name;
++---------+
+| name    |
++---------+
+| KARTHIK |
++---------+
+1 row in set (
+ (BOTH ARE SAME)___________________________________________
+
+mysql> select * from emp;
++------+---------+--------+------------+
+| id   | name    | salary | doj        |
++------+---------+--------+------------+
+|  101 | Karthik |  43000 | NULL       |
+|  102 | Arjun   |  45000 | 2022-05-25 |
+|  103 | Vijay   |  47000 | 2023-06-27 |
+|  104 | Arun    |  49000 | NULL       |
+|  105 | Gokul   |  50000 | NULL       |
+|  106 | Vinay   |  52000 | 2021-03-21 |
++------+---------+--------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select ucase(name) as empname,salary from emp;
++---------+--------+
+| empname | salary |
++---------+--------+
+| ARJUN   |  45000 |
+| ARUN    |  49000 |
+| GOKUL   |  50000 |
+| KARTHIK |  43000 |
+| VIJAY   |  47000 |
+| VINAY   |  52000 |
++---------+--------+
+6 rows in set (0.00 sec)
+(ALL THE NAME ARE UPPER CASE)________________________________________
+--------------------------------------------------------------------------------
+Aggregation function
+
+mysql> select avg(salary) as sal from emp;
++------------+
+| sal        |
++------------+
+| 47666.6667 |
++------------+
+1 row in set (0.05 sec)
+
+mysql> select sum(salary) as sal from emp;
++--------+
+| sal    |
++--------+
+| 286000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select count(salary) as sal from emp;
++-----+
+| sal |
++-----+
+|   6 |
++-----+
+1 row in set (0.10 sec)
+
+(limt is used to dispaly the records such as limt =1
+it will display 1st record when you use limt 2 it will show 1st and 2nd)
+
+'limit' and 'offset' used------------------------
+
+mysql> select * from emp limit 1 offset 1;
++------+-------+--------+------------+
+| id   | name  | salary | doj        |
++------+-------+--------+------------+
+|  102 | Arjun |  45000 | 2022-05-25 |
++------+-------+--------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp limit 1 offset 2;
++------+-------+--------+------------+
+| id   | name  | salary | doj        |
++------+-------+--------+------------+
+|  103 | Vijay |  47000 | 2023-06-27 |
++------+-------+--------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp limit 2 offset 2;
++------+-------+--------+------------+
+| id   | name  | salary | doj        |
++------+-------+--------+------------+
+|  103 | Vijay |  47000 | 2023-06-27 |
+|  104 | Arun  |  49000 | NULL       |
++------+-------+--------+------------+
+2 rows in set (0.00 sec)
+
+'sum'and 'groupby' function-------------------
+
+mysql> select * from company1;
++----------------+------------+
+| name           | investment |
++----------------+------------+
+| Happiest Minds |      50000 |
+| TCS            |      40000 |
+| Happiest Minds |      60000 |
+| TCS            |      70000 |
+| Wipro          |      80000 |
++----------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select sum(investment) as total,name from company1 group by name;
++--------+----------------+
+| total  | name           |
++--------+----------------+
+| 110000 | Happiest Minds |
+| 110000 | TCS            |
+|  80000 | Wipro          |
++--------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> select name,sum(investment) as total from company1 group by name;
++----------------+--------+
+| name           | total  |
++----------------+--------+
+| Happiest Minds | 110000 |
+| TCS            | 110000 |
+| Wipro          |  80000 |
++----------------+--------+
+3 rows in set (0.00 sec)
+
+to make duplicate table------------------------------------------------------
+
+ create table emp2 as select * from emp;
+display
+ create * from emp2;
+
+
+DROP    :-means delete entier table 
+DELETE  :-means it delete spcific row or cloumn
+TRUNCATE:-means it delete only data of the table  
+-------------------------------------------------------------
+Normalization can avoid the repatation of the data 
+
+Inner Join:-
+
++------+--------+--------------+
+| Name | branch | faculty      |
++------+--------+--------------+
+| SRM  | CSE    | Suresh Kumar |
+| IIT  | EEE    | Rahul        |
+| MIIT | ECE    | Rupesh       |
++------+--------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student;
++--------+---------+--------+
+| rollno | name    | branch |
++--------+---------+--------+
+|      1 | Arjun   | CSE    |
+|      2 | Rajesh  | CSE    |
+|      3 | Vijay   | ECE    |
+|      4 | Karthik | EEE    |
++--------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select s.rollno,sname,c.name,c.branch from college c inner join student s on c.branch=s.branch;
+ERROR 1054 (42S22): Unknown column 'sname' in 'field list'
+mysql> select s.rollno,s.name,c.name,c.branch from college c inner join student s on c.branch=s.branch;
++--------+---------+------+--------+
+| rollno | name    | name | branch |
++--------+---------+------+--------+
+|      1 | Arjun   | SRM  | CSE    |
+|      2 | Rajesh  | SRM  | CSE    |
+|      3 | Vijay   | MIIT | ECE    |
+|      4 | Karthik | IIT  | EEE    |
++--------+---------+------+--------+
+4 rows in set (0.11 sec)
+
+mysql> select s.rollno,s.name,c.name,c.branch,c.faculty from college c inner join student s on c.branch=s.branch;
++--------+---------+------+--------+--------------+
+| rollno | name    | name | branch | faculty      |
++--------+---------+------+--------+--------------+
+|      1 | Arjun   | SRM  | CSE    | Suresh Kumar |
+|      2 | Rajesh  | SRM  | CSE    | Suresh Kumar |
+|      3 | Vijay   | MIIT | ECE    | Rupesh       |
+|      4 | Karthik | IIT  | EEE    | Rahul        |
++--------+---------+------+--------+--------------+
+4 rows in set (0.00 sec)
+-----------------------------------------------------
+
+left join:-
+
+mysql> select * from college;
++------+--------+--------------+
+| Name | branch | faculty      |
++------+--------+--------------+
+| SRM  | CSE    | Suresh Kumar |
+| IIT  | EEE    | Rahul        |
+| MIIT | ECE    | Rupesh       |
++------+--------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student;
++--------+---------+--------+
+| rollno | name    | branch |
++--------+---------+--------+
+|      1 | Arjun   | CSE    |
+|      2 | Rajesh  | CSE    |
+|      3 | Vijay   | ECE    |
+|      4 | Karthik | EEE    |
++--------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select s.rollno,s.name,s.branch,c.name,c.faculty from college c left join student s on c.branch=s.branch;
++--------+---------+--------+------+--------------+
+| rollno | name    | branch | name | faculty      |
++--------+---------+--------+------+--------------+
+|      2 | Rajesh  | CSE    | SRM  | Suresh Kumar |
+|      1 | Arjun   | CSE    | SRM  | Suresh Kumar |
+|      4 | Karthik | EEE    | IIT  | Rahul        |
+|      3 | Vijay   | ECE    | MIIT | Rupesh       |
++--------+---------+--------+------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into college values('Hindustan','Mech','Swaroop');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select s.rollno,s.name,s.branch,c.name,c.faculty from college c left join student s on c.branch=s.branch;
++--------+---------+--------+-----------+--------------+
+| rollno | name    | branch | name      | faculty      |
++--------+---------+--------+-----------+--------------+
+|      2 | Rajesh  | CSE    | SRM       | Suresh Kumar |
+|      1 | Arjun   | CSE    | SRM       | Suresh Kumar |
+|      4 | Karthik | EEE    | IIT       | Rahul        |
+|      3 | Vijay   | ECE    | MIIT      | Rupesh       |
+|   NULL | NULL    | NULL   | Hindustan | Swaroop      |
++--------+---------+--------+-----------+--------------+
+5 rows in set (0.00 sec)
+-------------------------------------------------------------
+Right join:-
+
+mysql> select s.rollno,s.name,s.branch,c.name,c.faculty from college c right join student s on c.branch=s.branch order by s.rollno;
++--------+---------+--------+------+--------------+
+| rollno | name    | branch | name | faculty      |
++--------+---------+--------+------+--------------+
+|      1 | Arjun   | CSE    | SRM  | Suresh Kumar |
+|      2 | Rajesh  | CSE    | SRM  | Suresh Kumar |
+|      3 | Vijay   | ECE    | MIIT | Rupesh       |
+|      4 | Karthik | EEE    | IIT  | Rahul        |
++--------+---------+--------+------+--------------+
+4 rows in set (0.00 sec)
+
+-------------------------------------------------------------
+3 table join :-
+
+mysql> select s.rollno,s.name,s.branch,c.name,c.faculty from college c cross join student s on c.branch=s.branch order by s.rollno;
++--------+---------+--------+------+--------------+
+| rollno | name    | branch | name | faculty      |
++--------+---------+--------+------+--------------+
+|      1 | Arjun   | CSE    | SRM  | Suresh Kumar |
+|      2 | Rajesh  | CSE    | SRM  | Suresh Kumar |
+|      3 | Vijay   | ECE    | MIIT | Rupesh       |
+|      4 | Karthik | EEE    | IIT  | Rahulsele        |
++--------+---------+--------+------+--------------+
+4 rows in set (0.00 sec)
+
+
+More than one query it is NESTED query
+
+Solution for 1st question 
+
+select c.customer_id, c.first_name from customers c where customer_id in (select customer_id from orders o join products p
+on p.product_id = o.product_id where brand_name = 'brand_1')
+and customer id in (select customer_id from orders o join products p on p.product_id = o.product_id where brand_name = 'brand_2');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

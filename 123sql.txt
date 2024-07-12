@@ -1,0 +1,228 @@
+CREATE DATABASE fake;
+CREATE TABLE fake.Employees (
+  Name VARCHAR(50)  NOT NULL,
+  Email VARCHAR(255)  NOT NULL,
+  City VARCHAR(50)  NOT NULL,
+  State VARCHAR(50)  NOT NULL,
+  Salary double  NOT NULL,
+  DOB Date,
+  id int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (id)
+);
+
+insert into  Employees values ('Suresh','Suresh@gmail.com', 'Bangalore', 'Karnataka',33400,'1991-06-26',  11); 
+insert into  Employees values ('Ramesh','Ramesh@yahoo.com', 'Mysore',  'Karnataka',13400,'2016-02-19',  12); 
+insert into  Employees values ('Satish','Satish@hotmail.com','Chennai', 'Tamil Naidu',23400,'2015-07-07',  13); 
+insert into  Employees values ( 'Ajay', 'Ajay@yahoo.com',  'Lucknow',   'Utter Pradesh',63400,'2009-08-30',  14); 
+insert into  Employees values ( 'Vijay','Vijay@hotmail.com','Hyderabadi','Telegana',33400,'1997-03-26',  15); 
+
+Test 1
+Note the time taken to run the queries below.
+
+mysql> SELECT COUNT(*) FROM Employees;
+
+mysql> SELECT COUNT(*) FROM Employees WHERE State = 'Tamil Naidu';
+
+mysql> SELECT COUNT(*) FROM Employees WHERE State = 'Utter Pradesh';
+
+mysql> SELECT COUNT(*) FROM Employees WHERE State = 'Karnataka';
+
+mysql> SELECT COUNT(*) FROM Employees WHERE DOB BETWEEN '1982-01-01' AND '1992-01-01';
+
+mysql> SELECT COUNT(*) FROM Employees WHERE DOB = '1982-01-01';
+
+mysql> SELECT MAX(Salary) FROM Employees;
+
+mysql> SELECT MIN(Salary) FROM Employees;
+
+The queries above took between 0.72 sec and 0.62 seconds to execute. Now, let’s create indexes, do a second test, and compare the times.
+
+Create indexes
+In the queries above, the WHERE clause is using City, DOB, and Salary columns to select the desired results.
+
+Therefore, we will create indexes for these three columns only.
+
+mysql> CREATE INDEX State_idx ON Employees (State);
+
+Test 2
+mysql> SELECT COUNT(*) FROM Employees WHERE State = 'Tamil Naidu';
+
+mysql> SELECT COUNT(*) FROM Employees WHERE State = 'Utter Pradesh';
+
+mysql> SELECT COUNT(*) FROM Employees WHERE State = 'Karnataka';
+
+After creating indexes, the query execution time was reduced from an average of 0.70 seconds to 0.02 seconds. That was a great improvement. Creating an index for the ‘City’ column does not impact the query execution time of the queries below.
+
+SELECT COUNT(*) FROM Employees WHERE DOB BETWEEN '1982-01-01' AND '1992-01-01';
+
+SELECT COUNT(*) FROM Employees WHERE DOB = '1982-01-01';
+
+SELECT MAX(Salary) FROM Employees;
+
+SELECT MIN(Salary) FROM Employees;
+The queries below do not have indexes to help. We need to create an index on columns DOB and Salary to increase speed. We need to create indexes for the two columns as well.
+
+CREATE INDEX DOB_idx ON Employees (DOB);
+
+CREATE INDEX Salary_idx ON Employees (Salary);
+Run the queries again
+
+mysql> SELECT COUNT(*) FROM Employees WHERE DOB BETWEEN '1982-01-01' AND '1992-01-01';
+
+mysql> SELECT COUNT(*) FROM Employees WHERE DOB = '1982-01-01';
+
+mysql> SELECT MAX(Salary) FROM Employees;
+
+mysql> SELECT MIN(Salary) FROM Employees;
+
+***********
+To use a UNIQUE index run a CREATE UNIQUE INDEX query:
+
+CREATE UNIQUE INDEX demo_index ON demo_table(demo_column);
+
+You can also create a unique index when you create a table:
+
+CREATE TABLE demo_table (
+`demo_column` VARCHAR(100) NOT NULL,
+UNIQUE KEY(demo_column)
+);
+
+
+**************
+mysql> CREATE TABLE Articles (  
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,  
+    title VARCHAR(220),  
+    body TEXT,  
+    FULLTEXT (title, body)  
+);  
+
+mysql> INSERT INTO Articles VALUES  
+('0', 'MySQL Database', 'MySQL Database provides basic and advanced concepts for beginners ...'),  
+('0', 'How To Install MySQL', 'Here we will learn how we to download and install MySQL ...'),  
+('0', 'Optimising MySQL', 'In this Database we will show ...'),  
+('0', 'MySQL vs. MongoDB', 'In the following database comparison ...'),  
+('0', 'MySQL Versions', 'This section shows all MySQL versions ...');  
+
+mysql> SELECT * FROM articles   
+WHERE MATCH (title, body) AGAINST ('Database');  
+
+shows how to retrieve the relevant values explicitly:
+mysql> SELECT id, MATCH (title, body) AGAINST ('Database') FROM Articles;  
+
+
+mysql> ALTER TABLE books ADD FULLTEXT (content, author)  
+
+
+mysql> CREATE FULLTEXT INDEX address  
+ON office (address_line1, address_line2)  
+
+mysql> ALTER TABLE offices DROP INDEX address;  
+
+***********
+SHOW INDEXES FROM customers;
+
+CREATE INDEX idx_c_ln  ON customers(contactLastName);
+CREATE INDEX idx_c_fn ON customers(contactFirstName);
+CREATE INDEX idx_name_fl  ON customers(contactFirstName,contactLastName);
+CREATE INDEX idx_name_lf  ON customers(contactLastName,contactFirstName);
+
+EXPLAIN SELECT * FROM customers
+WHERE  contactFirstName LIKE 'A%'  OR contactLastName LIKE 'A%';
+
+EXPLAIN SELECT * FROM  customers USE INDEX (idx_name_fl, idx_name_lf) WHERE contactFirstName LIKE 'A%' OR contactLastName LIKE 'A%';
+
+*********
+SHOW INDEXES FROM products;
+To find the products whose prices are between 10 and 80, you use the following statement:
+
+SELECT productName, buyPrice FROM  products WHERE  buyPrice BETWEEN 10 AND 80 ORDER BY buyPrice;
+
+EXPLAIN SELECT productName, buyPrice FROM  products WHERE
+buyPrice BETWEEN 10 AND 80 ORDER BY buyPrice;
+
+CREATE INDEX idx_buyprice ON products(buyPrice); 
+
+EXPLAIN SELECT productName, buyPrice FROM  products WHERE
+buyPrice BETWEEN 10 AND 80 ORDER BY buyPrice;
+
+SELECT productName, buyPrice FROM  products FORCE INDEX (idx_buyPrice) WHERE  buyPrice BETWEEN 10 AND 80 ORDER BY buyPrice;
+
+EXPLAIN SELECT productName, buyPrice FROM  products FORCE INDEX (idx_buyprice) WHERE buyPrice BETWEEN 10 AND 80 ORDER BY buyPrice;
+
+************
+Hints
+
+SELECT /*+ NO_INDEX(co PRIMARY) ORDER_INDEX(ci CountryCode) */
+       ci.CountryCode, co.Name AS Country, ci.Name AS City, ci.District
+  FROM world.country co
+       INNER JOIN world.city ci
+                  ON ci.CountryCode = co.Code
+ WHERE co.Continent = 'Asia'
+ ORDER BY ci.CountryCode, ci.ID;
+
+SELECT /*+ NO_INDEX(ci PRIMARY, CountryCode) */
+       ID, CountryCode, Name, District, Population
+  FROM world.city ci
+ WHERE Population > 1000000;
+
+ SHOW CREATE TABLE countrylanguage\G
+**************
+CREATE TABLE index_demo ( 
+    name VARCHAR(20) NOT NULL, 
+    age INT, 
+    pan_no VARCHAR(20), 
+    phone_no VARCHAR(20) 
+);
+How do we verify that we are using InnoDB engine?
+Run the below command:
+SHOW TABLE STATUS WHERE name = 'index_demo' \G;
+SHOW INDEX from index_demo
+
+ create the primary index on phone_no & examine the created index:
+ALTER TABLE index_demo ADD PRIMARY KEY (phone_no);
+SHOW INDEXES FROM index_demo;
+
+EXPLAIN SELECT * FROM index_demo WHERE phone_no = '9281072002';
+
+The following commands create 2 composite indexes in our table:
+CREATE INDEX composite_index_1 ON index_demo (phone_no, name, age);
+CREATE INDEX composite_index_2 ON index_demo (pan_no, name, age);
+
+The following command shows how to create a unique key index in MySQL:
+CREATE UNIQUE INDEX unique_idx_1 ON index_demo (pan_no);
+
+How to create a secondary index in MySQL?
+The following command creates a secondary index in the name column in the index_demo table.
+CREATE INDEX secondary_idx_1 ON index_demo (name);
+
+Partial Index:
+CREATE INDEX secondary_index_1 ON index_demo (name(4));
+
+SHOW EXTENDED INDEXES FROM index_demo;
+
+show create table employees\G
+
+//Creating Clustered Index
+CREATE Clustered Index IndexName_TableName_ColumnName
+ON TableName(ColumnName ASC)
+
+
+CREATE TABLE Students( Stud_Id INT NOT NULL AUTO_INCREMENT, User_Id INT NOT NULL,
+PRIMARY KEY (User_Id, Stud_ID) //clustered index ) ENGINE = InnoDB ;
+
+
+Examples of MySQL Clustered Index
+CREATE TABLE Training(TID INT PRIMARY KEY AUTO_INCREMENT, Label VARCHAR(255), Information TEXT) ENGINE = INNODB;
+
+CREATE FULLTEXT INDEX idx_Info ON Training(Infromation);
+CREATE FULLTEXT INDEX idx_Label ON Training(Label);
+
+INSERT INTO Training (TID,Label, Information) VALUES(‘1’,’MySQL JOINS’,‘MySQL JOINS are the clauses that are applied on our database tables to combine two or more tables to provide the result set.’);
+
+We can even create a table like this to have a clustered index where we have defined two integer columns as primary keys in the InnoDB table:
+
+Code:
+
+CREATE TABLE Students( Stud_Id INT NOT NULL AUTO_INCREMENT, User_Id INT NOT NULL,
+PRIMARY KEY (User_Id, Stud_ID) //clustered index ) ENGINE = InnoDB ;
+

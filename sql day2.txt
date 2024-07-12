@@ -1,0 +1,295 @@
+mysql> use test4;
+Database changed
+mysql> select database();
++------------+
+| database() |
++------------+
+| test4      |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select ename,job,sal,
+    -> (case when job='clerk'then 1.5*sal
+    -> when job='analyst'then 1.75*sal
+    -> when job='salesman'then 2.0*sal
+    -> else
+    -> sal
+    -> end)"bonus"
+    -> from emp
+    -> order by 2;
++--------+-----------+------+-------+
+| ename  | job       | sal  | bonus |
++--------+-----------+------+-------+
+| SCOTT  | ANALYST   | 3000 |  5250 |
+| FORD   | ANALYST   | 3000 |  5250 |
+| SMITH  | CLERK     |  800 |  1200 |
+| ADAMS  | CLERK     | 1100 |  1650 |
+| JAMES  | CLERK     |  950 |  1425 |
+| MILLER | CLERK     | 1300 |  1950 |
+| JONES  | MANAGER   | 2975 |  2975 |
+| BLAKE  | MANAGER   | 2850 |  2850 |
+| CLARK  | MANAGER   | 2450 |  2450 |
+| KING   | PRESIDENT | 5000 |  5000 |
+| ALLEN  | SALESMAN  | 1600 |  3200 |
+| WARD   | SALESMAN  | 1250 |  2500 |
+| MARTIN | SALESMAN  | 1250 |  2500 |
+| TURNER | SALESMAN  | 1500 |  3000 |
++--------+-----------+------+-------+
+14 rows in set (0.00 sec)
+
+mysql> select ename,sal,if(sal>3000,'high','low')as comments from emp;
++--------+------+----------+
+| ename  | sal  | comments |
++--------+------+----------+
+| SMITH  |  800 | low      |
+| ALLEN  | 1600 | low      |
+| WARD   | 1250 | low      |
+| JONES  | 2975 | low      |
+| MARTIN | 1250 | low      |
+| BLAKE  | 2850 | low      |
+| CLARK  | 2450 | low      |
+| SCOTT  | 3000 | low      |
+| KING   | 5000 | high     |
+| TURNER | 1500 | low      |
+| ADAMS  | 1100 | low      |
+| JAMES  |  950 | low      |
+| FORD   | 3000 | low      |
+| MILLER | 1300 | low      |
++--------+------+----------+
+14 rows in set (0.01 sec)
+
+ifnull function-------------------------------
+mysql> select ename,sal,comm,sal+comm,ifnull((sal+comm),sal)"ifnull"from emp;
++--------+------+------+----------+--------+
+| ename  | sal  | comm | sal+comm | ifnull |
++--------+------+------+----------+--------+
+| SMITH  |  800 | NULL |     NULL |    800 |
+| ALLEN  | 1600 |  300 |     1900 |   1900 |
+| WARD   | 1250 |  500 |     1750 |   1750 |
+| JONES  | 2975 | NULL |     NULL |   2975 |
+| MARTIN | 1250 | 1400 |     2650 |   2650 |
+| BLAKE  | 2850 | NULL |     NULL |   2850 |
+| CLARK  | 2450 | NULL |     NULL |   2450 |
+| SCOTT  | 3000 | NULL |     NULL |   3000 |
+| KING   | 5000 | NULL |     NULL |   5000 |
+| TURNER | 1500 |    0 |     1500 |   1500 |
+| ADAMS  | 1100 | NULL |     NULL |   1100 |
+| JAMES  |  950 | NULL |     NULL |    950 |
+| FORD   | 3000 | NULL |     NULL |   3000 |
+| MILLER | 1300 | NULL |     NULL |   1300 |
++--------+------+------+----------+--------+
+14 rows in set (0.00 sec)
+
+nullif--------------------------------------------------------------------------------
+
+mysql> select ename,sal,length(sal),length(ename),
+    -> nullif(length(ename),length(sal))"nullif"
+    -> from emp;
++--------+------+-------------+---------------+--------+
+| ename  | sal  | length(sal) | length(ename) | nullif |
++--------+------+-------------+---------------+--------+
+| SMITH  |  800 |           3 |             5 |      5 |
+| ALLEN  | 1600 |           4 |             5 |      5 |
+| WARD   | 1250 |           4 |             4 |   NULL |
+| JONES  | 2975 |           4 |             5 |      5 |
+| MARTIN | 1250 |           4 |             6 |      6 |
+| BLAKE  | 2850 |           4 |             5 |      5 |
+| CLARK  | 2450 |           4 |             5 |      5 |
+| SCOTT  | 3000 |           4 |             5 |      5 |
+| KING   | 5000 |           4 |             4 |   NULL |
+| TURNER | 1500 |           4 |             6 |      6 |
+| ADAMS  | 1100 |           4 |             5 |      5 |
+| JAMES  |  950 |           3 |             5 |      5 |
+| FORD   | 3000 |           4 |             4 |   NULL |
+| MILLER | 1300 |           4 |             6 |      6 |
++--------+------+-------------+---------------+--------+
+14 rows in set (0.00 sec)
+
+aggregate function----------------------------------------------------------------------
+
+count-----
+mysql> select count(*),count(empno) from emp;
++----------+--------------+
+| count(*) | count(empno) |
++----------+--------------+
+|       14 |           14 |
++----------+--------------+
+1 row in set (0.02 sec)
+min,max---------------------------------------------------------------------------------
+mysql> select min(sal)"leastsal",max(sal)"highsal",
+    -> min(hiredate)"earliest",max(hiredate)"latest"
+    -> from emp;
++----------+---------+------------+------------+
+| leastsal | highsal | earliest   | latest     |
++----------+---------+------------+------------+
+|      800 |    5000 | 1980-12-17 | 1987-07-13 |
++----------+---------+------------+------------+
+1 row in set (0.01 sec)
+mysql> select min(ename),max(ename)from emp;
++------------+------------+
+| min(ename) | max(ename) |
++------------+------------+
+| ADAMS      | WARD       |
++------------+------------+
+Sum and Average-------------------------------------------------------------------------
+mysql> select sum(sal)"totsal",avg(sal) "averagesal" from emp;
++--------+-------------------+
+| totsal | averagesal        |
++--------+-------------------+
+|  29025 | 2073.214285714286 |
++--------+-------------------+
+1 row in set (0.00 sec)
+groupby----------------------------------------------------------------------------------
+
+
+mysql> select count(empno),deptno from emp group by deptno;
++--------------+--------+
+| count(empno) | deptno |
++--------------+--------+
+|            3 |     10 |
+|            5 |     20 |
+|            6 |     30 |
++--------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select count(empno),sum(sal),max(sal),min(sal),avg(sal),deptno from emp group by deptno;
++--------------+----------+----------+----------+--------------------+--------+
+| count(empno) | sum(sal) | max(sal) | min(sal) | avg(sal)           | deptno |
++--------------+----------+----------+----------+--------------------+--------+
+|            3 |     8750 |     5000 |     1300 | 2916.6666666666665 |     10 |
+|            5 |    10875 |     3000 |      800 |               2175 |     20 |
+|            6 |     9400 |     2850 |      950 | 1566.6666666666667 |     30 |
++--------------+----------+----------+----------+--------------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select count(empno),deptno from emp group by deptno  having deptno = 30;
++--------------+--------+
+| count(empno) | deptno |
++--------------+--------+
+|            6 |     30 |
++--------------+--------+
+1 row in set (0.00 sec)
+
+set operation------------------------------------------------------------------
+
+union,uinion =all,intersect,except
+
+mysql> select job from emp where deptno=10
+    -> union
+    -> select job from emp where deptno=20;
++-----------+
+| job       |
++-----------+
+| MANAGER   |
+| PRESIDENT |
+| CLERK     |
+| ANALYST   |
++-----------+
+4 rows in set (0.00 sec)
+
+mysql> select job from emp where deptno=10
+    -> unionall
+    -> unionall^C
+mysql> select job from emp where deptno=10
+    -> union all
+    -> select job from emp where deptno=20;
++-----------+
+| job       |
++-----------+
+| MANAGER   |
+| PRESIDENT |
+| CLERK     |
+| CLERK     |
+| MANAGER   |
+| ANALYST   |
+| CLERK     |
+| ANALYST   |
++-----------+
+8 rows in set (0.00 sec)
+
+mysql> select job from emp where deptno=10
+    -> intersect
+    -> select job from emp where deptno=20;
++---------+
+| job     |
++---------+
+| MANAGER |
+| CLERK   |
++---------+
+2 rows in set (0.00 sec)
+
+mysql> select job from emp where deptno=10
+    -> except
+    -> select job from emp where deptno=20;
++-----------+
+| job       |
++-----------+
+| PRESIDENT |
++-----------+
+1 row in set (0.00 sec)
+
+date--------------------------------------------------------------------------------------------------------
+
+
+mysql> select quarter(curdate());
++--------------------+
+| quarter(curdate()) |
++--------------------+
+|                  3 |
++--------------------+
+1 row in set (0.04 sec)
+
+mysql> select quarter(2001-12-14);
++---------------------+
+| quarter(2001-12-14) |
++---------------------+
+|                NULL |
++---------------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> select quarter('2001-12-14');
++-----------------------+
+| quarter('2001-12-14') |
++-----------------------+
+|                     4 |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> select dayname('2001-12-14');
++-----------------------+
+| dayname('2001-12-14') |
++-----------------------+
+| Friday                |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> select makedate(2001,245);
++--------------------+
+| makedate(2001,245) |
++--------------------+
+| 2001-09-02         |
++--------------------+
+1 row in set (0.00 sec)
+
+multiple quaries--------------------------------------------------
+
+mysql> select ename,sal from emp where sal in (select sal from emp where ename in ('ford','martin'));
++--------+------+
+| ename  | sal  |
++--------+------+
+| WARD   | 1250 |
+| MARTIN | 1250 |
+| SCOTT  | 3000 |
+| FORD   | 3000 |
++--------+------+
+4 rows in set (0.03 sec)
+
+nested quaries--------
+
+mysql> select ename,sal,deptno from emp where sal in (select max(sal) from emp where deptno =(select deptno from emp where ename ='turner'));
++-------+------+--------+
+| ename | sal  | deptno |
++-------+------+--------+
+| BLAKE | 2850 |     30 |
++-------+------+--------+
+1 row in set (0.00 sec)

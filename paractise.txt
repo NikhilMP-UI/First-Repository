@@ -1,0 +1,21 @@
+ create table dept (
+     id int primary key,
+     name varchar(50),
+  );
+ create table teacher (
+          id int primary key,
+          name varchar(50),
+          dept_id int,
+          foreign key (dept_id) references dept(id)
+);
+
+insert into student (
+    -> rollno, name, marks, grade, city)
+    -> values
+    -> (101,'ganesh',78,'c','kar'),
+    -> (102,'niki',93,'a','mumbai'),
+    -> (103,'chetan',85,'b','mumbai'),
+    -> (104,'dhruv',96,'a','delhi'),
+    -> (105,'ali',11,'f','delhi'),
+    -> (106,'farah',82,'b','delhi');
+    
